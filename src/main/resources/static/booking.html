@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Bookings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        table {
+            width: 80%;
+            margin: 2rem auto;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Hotel Bookings</h1>
+</header>
+
+<table>
+    <thead>
+    <tr>
+        <th>Booking ID</th>
+        <th>User Email</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Price</th>
+        <th>Room Type</th>
+        <th>Room Number</th>
+    </tr>
+    </thead>
+    <tbody id="bookings-table-body">
+    <!-- Data will be inserted here -->
+    </tbody>
+</table>
+
+<footer>
+    <p>&copy; 2024 Hotel Booking Management</p>
+</footer>
+
+<script>
+    // Fetch bookings and display them in the table
+    function fetchBookings() {
+        fetch('http://localhost:8080/bookings/all')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('bookings-table-body');
+                tableBody.innerHTML = ''; // Clear any existing rows
+
+                data.forEach(booking => {
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>${booking.id}</td>
+                        <td>${booking.userEmail}</td>
+                        <td>${booking.startTime}</td>
+                        <td>${booking.endTime}</td>
+                        <td>${booking.price}</td>
+                        <td>${booking.roomType}</td>
+                        <td>${booking.roomNo}</td>
+                    `;
+
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching bookings:', error));
+    }
+
+    // Fetch and display bookings on page load
+    window.onload = fetchBookings;
+</script>
+
+</body>
+</html>
