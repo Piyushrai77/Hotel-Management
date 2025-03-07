@@ -17,6 +17,7 @@ public class Bookings {
       @Column(name = "user_email")
     private String userEmail;
 
+    @Column(name="room_number")
     private String roomNumber;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
@@ -31,8 +32,8 @@ public class Bookings {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name="room_Type_id")
-
     private RoomTypeEntity roomType;
 
     //Getter and Setter

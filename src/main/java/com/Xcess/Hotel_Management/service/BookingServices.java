@@ -24,7 +24,7 @@ public class BookingServices {
 
     @Transactional
     public Bookings createBooking(Bookings bookings){
-        List<Bookings> overlappingBookings = bookingRepo.findOverlappingBookings(
+       /* List<Bookings> overlappingBookings = bookingRepo.findOverlappingBookings(
                 bookings.getRoomNumber(),
                 bookings.getStartTime(),
                 bookings.getEndTime()
@@ -43,6 +43,29 @@ public class BookingServices {
 
         // Step 4: Save the booking and return it
         System.out.println("Saving booking: " + bookings);
+        return bookingRepo.save(bookings);    */
+
+        System.out.println("Received booking: " + bookings);  // Debugging Log
+
+        List<Bookings> overlappingBookings = bookingRepo.findOverlappingBookings(
+                bookings.getRoomNumber(),
+                bookings.getStartTime(),
+                bookings.getEndTime()
+        );
+
+        if (!overlappingBookings.isEmpty()) {
+            throw new IllegalArgumentException("Room is not available for the selected time.");
+        }
+
+        RoomTypeEntity room = roomTypeRepo.findById(bookings.getRoomType().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Room type not found"));
+
+        bookings.setRoomType(room);
+
+        Bookings savedBooking = bookingRepo.save(bookings);
+
+        System.out.println("Saved booking: " + savedBooking);  // Debugging Log
+
         return bookingRepo.save(bookings);
     }
 
@@ -92,5 +115,7 @@ public class BookingServices {
         bookingRepo.deleteById(id);
         return "Booking with ID " + id + " deleted successfully.";
     }
+
+
 
 }

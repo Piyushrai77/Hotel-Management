@@ -4,6 +4,7 @@ import com.Xcess.Hotel_Management.dto.BookingDTO;
 import com.Xcess.Hotel_Management.entity.Bookings;
 import com.Xcess.Hotel_Management.service.BookingServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,12 @@ public class BookingController {
     public Bookings createBooking(@RequestBody Bookings bookings) {
         System.out.println("All bookings: " + bookings);
         return bookingServices.createBooking(bookings);
+    }
+    @PostMapping("/create")
+    public ResponseEntity<String> createBooking(@RequestBody BookingDTO bookingDto) {
+        // Simulating saving the booking
+
+        return ResponseEntity.ok("Booking created successfully!");
     }
     @GetMapping("/all")
     public List<BookingDTO> getAllBookings() {
